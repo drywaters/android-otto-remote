@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ScrollView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 public class OttoRemote extends BlunoLibrary {
@@ -14,37 +14,65 @@ public class OttoRemote extends BlunoLibrary {
     private Button buttonSerialSend;
     private EditText serialSendText;
     private TextView serialReceivedText;
+    private ImageButton buttonUp;
+    private ImageButton buttonDown;
+    private ImageButton buttonLeft;
+    private ImageButton buttonRight;
+    private long startTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        startTime = System.currentTimeMillis();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_otto_remote);
-        onCreateProcess();														//onCreate Process by BlunoLibrary
 
+        onCreateProcess();														//onCreate Process by BlunoLibrary
 
         serialBegin(115200);													//set the Uart Baudrate on BLE chip to 115200
 
-      /*  serialReceivedText=(TextView) findViewById(R.id.serialReveicedText);	//initial the EditText of the received data
-        serialSendText=(EditText) findViewById(R.id.serialSendText);			//initial the EditText of the sending data
-
-        buttonSerialSend = (Button) findViewById(R.id.buttonSerialSend);		//initial the button for sending the data
-        buttonSerialSend.setOnClickListener(new OnClickListener() {
-
+        buttonUp = (ImageButton) findViewById(R.id.upButton);
+        buttonUp.setOnClickListener(new OnClickListener() {
             @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-
-                serialSend(serialSendText.getText().toString());				//send the data to the BLUNO
+            public void onClick(View view) {
+                long diff = System.currentTimeMillis() - startTime;
+                if (System.currentTimeMillis() > startTime + 1000) {
+                    serialSend("U");
+                    startTime = System.currentTimeMillis();
+                }
             }
         });
-*/
+
+        buttonDown = (ImageButton) findViewById(R.id.downButton);
+        buttonDown.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                serialSend("D");
+            }
+        });
+
+        buttonLeft = (ImageButton) findViewById(R.id.leftButton);
+        buttonLeft.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                serialSend("L");
+            }
+        });
+
+        buttonRight = (ImageButton) findViewById(R.id.rightButton);
+        buttonRight.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                serialSend("R");
+            }
+        });
+
+
         buttonScan = (Button) findViewById(R.id.buttonScan);					//initial the button for scanning the BLE device
         buttonScan.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
-
                 buttonScanOnClickProcess();										//Alert Dialog for selecting the BLE device
             }
         });
@@ -106,10 +134,10 @@ public class OttoRemote extends BlunoLibrary {
 
     @Override
     public void onSerialReceived(String theString) {							//Once connection data received, this function will be called
-        // TODO Auto-generated method stub
+      /*  // TODO Auto-generated method stub
         serialReceivedText.append(theString);							//append the text into the EditText
         //The Serial data from the BLUNO may be sub-packaged, so using a buffer to hold the String is a good choice.
-        ((ScrollView)serialReceivedText.getParent()).fullScroll(View.FOCUS_DOWN);
+        ((ScrollView)serialReceivedText.getParent()).fullScroll(View.FOCUS_DOWN);*/
     }
 
 }
