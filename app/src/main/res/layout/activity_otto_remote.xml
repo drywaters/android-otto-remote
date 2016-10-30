@@ -60,6 +60,7 @@
         android:layout_width="@dimen/button_width"
         android:layout_height="@dimen/button_height"
         android:layout_toRightOf="@id/upButton"
+        android:layout_below="@id/logo"
         android:background="@drawable/music_selector"
         android:scaleType="centerCrop"/>
 
