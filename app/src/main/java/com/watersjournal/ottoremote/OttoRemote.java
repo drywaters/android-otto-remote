@@ -18,6 +18,7 @@ public class OttoRemote extends BlunoLibrary {
     private ImageButton buttonDown;
     private ImageButton buttonLeft;
     private ImageButton buttonRight;
+    private ImageButton buttonMusic;
     private long startTime;
 
     @Override
@@ -74,6 +75,18 @@ public class OttoRemote extends BlunoLibrary {
                 long diff = System.currentTimeMillis() - startTime;
                 if (System.currentTimeMillis() > startTime + 1000) {
                     serialSend("R");
+                    startTime = System.currentTimeMillis();
+                }
+            }
+        });
+
+        buttonMusic = (ImageButton) findViewById(R.id.musicButton);
+        buttonMusic.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                long diff = System.currentTimeMillis() - startTime;
+                if (System.currentTimeMillis() > startTime + 1000) {
+                    serialSend("M");
                     startTime = System.currentTimeMillis();
                 }
             }

@@ -17,7 +17,7 @@ RR 5==>   -----   ------  <== RL 4
 */
 #define TRIM_RR 7
 #define TRIM_RL 4
-#define TRIM_YR  4
+#define TRIM_YR 4
 #define TRIM_YL -7
 //OTTO.setTrims(-7,-4,-4,7);
 
@@ -30,11 +30,8 @@ RR 5==>   -----   ------  <== RL 4
 
 Oscillator servo[N_SERVOS];
 
-const int trigPin = 8;
-const int echoPin = 9;
-
-long duration,cm;
-
+const int trigPin = 9;
+const int echoPin = 8;
 
 // function prototypes
 void turnLeft(int steps, int T=3000);
@@ -42,6 +39,7 @@ void turnRight(int steps, int T=3000);
 void walk(int steps, int T=1000);
 void backyard(int steps, int T=3000);
 bool safeDistance();
+void playMusic();
 
 void setup() {
   // put your setup code here, to run once:
@@ -57,6 +55,9 @@ void setup() {
   servo[1].SetTrim(TRIM_RL);
   servo[2].SetTrim(TRIM_YR);
   servo[3].SetTrim(TRIM_YL);
+  
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
   
   for(int i=0;i<4;i++) servo[i].SetPosition(90);
 }
@@ -74,10 +75,13 @@ void loop() {
         Serial.println("MOVING OTTO UP");
         if (safeDistance()) {
           walk(2, t*2);
+        } else {
+          tone(10, 440, 1000);
         }
         break;
       case 'B':
         Serial.println("MOVING OTTO DOWN");
+        tone(13, 800, 100);
         backyard(2, t*2);
         break;
       case 'L':
@@ -87,6 +91,9 @@ void loop() {
       case 'R':
         Serial.println("MOVING OTTO RIGHT");
         turnRight(2, t*2);
+        break;
+      case 'M':
+        Serial.println("PLAYING MUSIC");
         break;
     }
   }
@@ -144,16 +151,20 @@ void turnRight(int steps, int T){
 }
 
 bool safeDistance() {
-  pinMode(trigPin, OUTPUT);
-  digitalWrite(trigPin, LOW);
-  delayMicroseconds(2);
-  digitalWrite(trigPin, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(trigPin, LOW);
-  pinMode(echoPin, INPUT);
-  duration = pulseIn(echoPin, HIGH);
-
-  cm = duration / 29 / 2;
-  return cm > 5;
+  long duration, distance;
+  digitalWrite(trigPin, LOW);  // Make sure not sending any sound
+  delayMicroseconds(2); // Clears the speaker for 2 microseconds
+  digitalWrite(trigPin, HIGH);  // Start sound waves
+  delayMicroseconds(10); // Run for 10 microseconds
+  digitalWrite(trigPin, LOW); // Turn off sound waves
+  duration = pulseIn(echoPin, HIGH);  // Set the echo pin to wait till receive 5V
+  distance = (duration/2) * 0.03435;  // Calculate the distance by formula (Distance = Speed * Time)
+                                      // Time / 2 because do not want the time from the object and back
+                                      // We only want the time to the object.
+                                      // 0.03435 is the speed of sound in CM/S^2
+  return (distance > 5);
 }
 
+void playMusic() {
+  
+}
