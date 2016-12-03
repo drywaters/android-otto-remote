@@ -82,7 +82,7 @@ void loop() {
       case 'B':
         Serial.println("MOVING OTTO DOWN");
         tone(13, 800, 100);
-        backyard(2, t*2);
+        back(2, t*2);
         break;
       case 'L':
         Serial.println("MOVING OTTO LEFT");
@@ -99,10 +99,6 @@ void loop() {
   }
 }
 
-////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////FUNCIONES DE CONTROL//////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////
-
 void oscillate(int A[N_SERVOS], int O[N_SERVOS], int T, double phase_diff[N_SERVOS]){
   for (int i=0; i<4; i++) {
     servo[i].SetO(O[i]);
@@ -118,7 +114,7 @@ void oscillate(int A[N_SERVOS], int O[N_SERVOS], int T, double phase_diff[N_SERV
   }
 }
 
-void walk(int steps, int T){
+void back(int steps, int T){
     int A[4]= {15, 15, 30, 30};
     int O[4] = {0, 0, 0, 0};
     double phase_diff[4] = {DEG2RAD(0), DEG2RAD(0), DEG2RAD(90), DEG2RAD(90)};
@@ -126,7 +122,7 @@ void walk(int steps, int T){
     for(int i=0;i<steps;i++)oscillate(A,O, T, phase_diff);
 }
 
-void backyard(int steps, int T){
+void walk(int steps, int T){
     int A[4]= {15, 15, 30, 30};
     int O[4] = {0, 0, 0, 0};
     double phase_diff[4] = {DEG2RAD(0), DEG2RAD(0), DEG2RAD(-90), DEG2RAD(-90)}; 
