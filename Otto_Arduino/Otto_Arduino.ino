@@ -1,6 +1,5 @@
 #include <Servo.h>
 #include "Oscillator.h"
-#include <EEPROM.h>
 
 #define N_SERVOS 4
 //-- First step: Configure the pins where the servos are attached
@@ -19,7 +18,6 @@ RR 5==>   -----   ------  <== RL 4
 #define TRIM_RL 4
 #define TRIM_YR 4
 #define TRIM_YL -7
-//OTTO.setTrims(-7,-4,-4,7);
 
 #define PIN_RR 5
 #define PIN_RL 4
@@ -37,13 +35,11 @@ const int echoPin = 8;
 void turnLeft(int steps, int T=3000);
 void turnRight(int steps, int T=3000);
 void walk(int steps, int T=1000);
-void backyard(int steps, int T=3000);
+void back(int steps, int T=3000);
 bool safeDistance();
 void playMusic();
 
 void setup() {
-  // put your setup code here, to run once:
-
   Serial.begin(115200);
 
   servo[0].attach(PIN_RR);
