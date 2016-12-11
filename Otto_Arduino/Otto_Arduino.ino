@@ -24,12 +24,20 @@ RR 5==>   -----   ------  <== RL 4
 #define PIN_YR 3
 #define PIN_YL 2
 
+#define C 2100
+#define D 1870
+#define E 1670
+#define f 1580
+#define G 1400
+#define R 0
+
 #define INTERVALTIME 10.0 
 
 Oscillator servo[N_SERVOS];
 
 const int trigPin = 9;
 const int echoPin = 8;
+const int speakerOut = 10;
 
 // function prototypes
 void turnLeft(int steps, int T=3000);
@@ -38,6 +46,19 @@ void walk(int steps, int T=1000);
 void back(int steps, int T=3000);
 bool safeDistance();
 void playMusic();
+
+int melody[] = {E,E,E,R,E,E,E,R,E,G,C,D,E,R,f,f,f,f,f,E,E,E,E,D,D,E,D};
+int MAX_COUNT = sizeof(melody) / 2; // Melody length, for looping.
+// Set overall tempo
+long tempo = 7500;
+// Set length of pause between notes
+int pause = 1000;
+// Loop variable to increase Rest length
+int rest_count = 70; 
+// Initialize core variables
+int tone_ = 0;
+int beat = 0;
+long duration  = 0;
 
 void setup() {
   Serial.begin(115200);
@@ -54,6 +75,7 @@ void setup() {
   
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
+  pinMode(speakerOut, OUTPUT);
   
   for(int i=0;i<4;i++) servo[i].SetPosition(90);
 }
@@ -90,6 +112,7 @@ void loop() {
         break;
       case 'M':
         Serial.println("PLAYING MUSIC");
+        playMusic();
         break;
     }
   }
@@ -157,6 +180,38 @@ bool safeDistance() {
   return (distance > 5);
 }
 
+void playTone() 
+{
+   long elapsed_time = 0;
+   if(tone_ > 0) { // if this isn't a Rest beat, while the tone has
+     //  played less long than 'duration', pulse speaker HIGH and LOW
+   while(elapsed_time < duration) {
+       digitalWrite(speakerOut,HIGH);
+       delayMicroseconds(tone_ / 2);
+       // DOWN
+       digitalWrite(speakerOut, LOW);
+       delayMicroseconds(tone_ / 2);
+       // Keep track of how long we pulsed
+       elapsed_time +=(tone_);
+     }
+   }
+   else 
+   { 
+    // Rest beat; loop times delay
+     for(int j = 0; j < rest_count; j++) 
+   {
+       delayMicroseconds(duration); 
+     } 
+   }                                
+}
+
 void playMusic() {
-  
+    for(int i=0; i < MAX_COUNT; i++) {
+    tone_ = melody[i];
+    beat = 50;
+    duration = beat * tempo; // Set up timing
+    playTone();
+    // A pause between notes...
+    delayMicroseconds(pause);
+    }
 }
