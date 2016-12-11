@@ -3,13 +3,13 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:paddingBottom="@dimen/activity_vertical_margin"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:paddingTop="@dimen/activity_vertical_margin"
-                tools:context=".OttoRemote"
-                android:focusable="true"
-                android:focusableInTouchMode="true">
+                tools:context=".OttoRemote">
 
     <Button
         android:id="@+id/buttonScan"
@@ -17,54 +17,60 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:text="Scan" />
+        android:text="Scan"/>
 
     <ImageButton
-        android:layout_width="160dp"
-        android:layout_height="160dp"
-        android:background="@drawable/up_selector"
-        android:scaleType="centerCrop"
         android:id="@+id/upButton"
+        android:layout_width="@dimen/button_width"
+        android:layout_height="@dimen/button_height"
         android:layout_below="@+id/logo"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/up_selector"
+        android:scaleType="centerCrop"/>
 
     <ImageButton
-        android:layout_width="160dp"
-        android:layout_height="160dp"
-        android:background="@drawable/right_selector"
-        android:scaleType="centerCrop"
         android:id="@+id/rightButton"
-        android:layout_marginTop="-50dp"
+        android:layout_width="@dimen/button_width"
+        android:layout_height="@dimen/button_height"
         android:layout_alignParentRight="true"
-        android:layout_below="@id/upButton"/>
+        android:layout_below="@id/upButton"
+        android:background="@drawable/right_selector"
+        android:scaleType="centerCrop"/>
 
     <ImageButton
-        android:layout_width="160dp"
-        android:layout_height="160dp"
-        android:background="@drawable/down_selector"
-        android:scaleType="centerCrop"
-        android:layout_marginTop="-50dp"
         android:id="@+id/downButton"
+        android:layout_width="@dimen/button_width"
+        android:layout_height="@dimen/button_height"
         android:layout_below="@id/rightButton"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/down_selector"
+        android:scaleType="centerCrop"/>
 
     <ImageButton
-        android:layout_width="160dp"
-        android:layout_height="160dp"
-        android:background="@drawable/left_selector"
-        android:scaleType="centerCrop"
-        android:layout_marginTop="-50dp"
         android:id="@+id/leftButton"
+        android:layout_width="@dimen/button_width"
+        android:layout_height="@dimen/button_height"
         android:layout_alignParentLeft="true"
-        android:layout_below="@id/upButton"/>
+        android:layout_below="@id/upButton"
+        android:background="@drawable/left_selector"
+        android:scaleType="centerCrop"/>
+
+    <ImageButton
+        android:id="@+id/musicButton"
+        android:layout_width="@dimen/button_width"
+        android:layout_height="@dimen/button_height"
+        android:layout_toRightOf="@id/upButton"
+        android:layout_below="@id/logo"
+        android:background="@drawable/music_selector"
+        android:scaleType="centerCrop"/>
 
     <ImageView
+        android:id="@+id/logo"
         android:layout_width="300dp"
         android:layout_height="160dp"
-        android:src="@drawable/otto_logo"
-        android:scaleType="centerInside"
-        android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true"
-        android:id="@+id/logo" />
+        android:layout_centerHorizontal="true"
+        android:scaleType="centerInside"
+        android:src="@drawable/otto_logo"/>
 
 </RelativeLayout>
